@@ -1,0 +1,4 @@
+enum CharacterCreationMode {
+  assignPoints,
+  rollStats,
+}
