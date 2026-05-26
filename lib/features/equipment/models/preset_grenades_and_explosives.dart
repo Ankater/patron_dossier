@@ -14,7 +14,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '10',
       enc: 0,
       cost: 40,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -30,7 +30,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '-',
       enc: 0,
       cost: 40,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitInflictStunned,
@@ -45,7 +45,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '16',
       enc: 2,
       cost: 50,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -60,7 +60,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '-',
       enc: 1,
       cost: 10,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBlast,
@@ -77,7 +77,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '6',
       enc: 0,
       cost: 50,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBlast,
@@ -93,7 +93,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '8',
       enc: 1,
       cost: 200,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitBlast,
@@ -108,7 +108,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '12',
       enc: 0,
       cost: 60,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -125,7 +125,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '16',
       enc: 1,
       cost: 400,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -141,7 +141,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '16',
       enc: 2,
       cost: 1000,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [
         weaponTraitRend12,
@@ -156,7 +156,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '-',
       enc: 0,
       cost: 200,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -172,7 +172,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '-',
       enc: 0,
       cost: 30,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBlast,
@@ -187,7 +187,7 @@ const grenadesAndExplosives = WeaponGroup(
       damage: '-',
       enc: 0,
       cost: 150,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,

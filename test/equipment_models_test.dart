@@ -1,4 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patron_dossier/features/equipment/models/armour.dart';
+import 'package:patron_dossier/features/equipment/models/armour_group.dart';
+import 'package:patron_dossier/features/equipment/models/location_armour.dart';
+import 'package:patron_dossier/features/equipment/models/preset_armour_traits.dart';
+import 'package:patron_dossier/features/equipment/models/preset_armours.dart';
 import 'package:patron_dossier/features/equipment/models/preset_grenades_and_explosives.dart';
 import 'package:patron_dossier/features/equipment/models/preset_melee_weapons.dart';
 import 'package:patron_dossier/features/equipment/models/preset_ranged_weapons.dart';
@@ -12,14 +17,14 @@ import 'package:patron_dossier/features/equipment/models/weapon_trait.dart';
 void main() {
   group('WeaponAvailability', () {
     test('exposes stable ids and labels', () {
-      expect(WeaponAvailability.common.id, 1);
-      expect(WeaponAvailability.common.label, 'Common');
-      expect(WeaponAvailability.scarce.id, 2);
-      expect(WeaponAvailability.scarce.label, 'Scarce');
-      expect(WeaponAvailability.rare.id, 3);
-      expect(WeaponAvailability.rare.label, 'Rare');
-      expect(WeaponAvailability.exotic.id, 4);
-      expect(WeaponAvailability.exotic.label, 'Exotic');
+      expect(Availability.common.id, 1);
+      expect(Availability.common.label, 'Common');
+      expect(Availability.scarce.id, 2);
+      expect(Availability.scarce.label, 'Scarce');
+      expect(Availability.rare.id, 3);
+      expect(Availability.rare.label, 'Rare');
+      expect(Availability.exotic.id, 4);
+      expect(Availability.exotic.label, 'Exotic');
     });
   });
 
@@ -47,7 +52,7 @@ void main() {
   });
 
   group('Weapon model', () {
-    const trait = WeaponTrait(id: 1, name: 'Close');
+    const trait = Trait(id: 1, name: 'Close');
     const weapon = Weapon(
       id: 1,
       name: 'Test Weapon',
@@ -57,7 +62,7 @@ void main() {
       mag: 2,
       enc: 1,
       cost: 100,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [trait],
     );
@@ -66,7 +71,7 @@ void main() {
       final updated = weapon.copyWith(
         name: 'Updated Weapon',
         cost: 200,
-        traits: const [WeaponTrait(id: 2, name: 'Loud')],
+        traits: const [Trait(id: 2, name: 'Loud')],
       );
 
       expect(updated.id, 1);
@@ -111,7 +116,7 @@ void main() {
 
   group('WeaponTrait', () {
     test('copyWith updates name and preserves id', () {
-      const trait = WeaponTrait(id: 1, name: 'Close');
+      const trait = Trait(id: 1, name: 'Close');
       final updated = trait.copyWith(name: 'Loud');
 
       expect(updated.id, 1);
@@ -131,7 +136,7 @@ void main() {
             damage: '5',
             enc: 1,
             cost: 100,
-            availability: WeaponAvailability.common,
+            availability: Availability.common,
             source: 'core book',
             traits: [],
           ),
@@ -142,6 +147,199 @@ void main() {
 
       expect(updated.name, 'Group');
       expect(updated.weapons, isEmpty);
+    });
+  });
+
+  group('LocationArmour', () {
+    test('copyWith updates nullable values and preserves unspecified values',
+        () {
+      const locationArmour = LocationArmour(arms: 1, body: 2, legs: 3);
+      final updated = locationArmour.copyWith(arms: null, head: 4);
+
+      expect(updated.arms, isNull);
+      expect(updated.body, 2);
+      expect(updated.legs, 3);
+      expect(updated.head, 4);
+    });
+
+    test('getArmourValue returns the first available location value', () {
+      expect(
+        const LocationArmour(arms: 1, body: 2).getArmourValue(),
+        1,
+      );
+      expect(
+        const LocationArmour(body: 2, legs: 3).getArmourValue(),
+        2,
+      );
+      expect(const LocationArmour(legs: 3).getArmourValue(), 3);
+      expect(const LocationArmour(head: 4).getArmourValue(), 4);
+      expect(const LocationArmour().getArmourValue(), isNull);
+    });
+  });
+
+  group('Armour model', () {
+    const armour = Armour(
+      name: 'Test Armour',
+      locationArmour: LocationArmour(body: 3),
+      enc: 2,
+      cost: 300,
+      availability: Availability.rare,
+      traits: [Trait(id: 40, name: 'Heavy (3)')],
+    );
+
+    test('copyWith updates values and preserves unspecified values', () {
+      final updated = armour.copyWith(
+        name: 'Updated Armour',
+        cost: 400,
+        traits: const [Trait(id: 3, name: 'Loud')],
+      );
+
+      expect(updated.name, 'Updated Armour');
+      expect(updated.locationArmour?.body, 3);
+      expect(updated.enc, 2);
+      expect(updated.cost, 400);
+      expect(updated.availability, Availability.rare);
+      expect(updated.traits.single.name, 'Loud');
+    });
+
+    test('copyWith can clear nullable location armour', () {
+      final updated = armour.copyWith(locationArmour: null);
+
+      expect(updated.locationArmour, isNull);
+    });
+  });
+
+  group('ArmourGroup', () {
+    test('copyWith updates armours and preserves name', () {
+      const group = ArmourGroup(
+        name: 'Group',
+        armours: [
+          Armour(
+            name: 'Test Armour',
+            locationArmour: LocationArmour(body: 3),
+            enc: 2,
+            cost: 300,
+            availability: Availability.rare,
+            traits: [],
+          ),
+        ],
+      );
+
+      final updated = group.copyWith(armours: const []);
+
+      expect(updated.name, 'Group');
+      expect(updated.armours, isEmpty);
+    });
+  });
+
+  group('Preset armours', () {
+    Armour armourNamed(String name) =>
+        presetArmours.firstWhere((armour) => armour.name == name);
+
+    test('contains grouped data from the armour table', () {
+      expect(presetArmourGroups, hasLength(5));
+      expect(presetArmours, hasLength(27));
+      expect(presetArmourGroups.first.name, 'Basic');
+      expect(presetArmourGroups.last.name, 'Power');
+    });
+
+    test('uses unique names', () {
+      final names = presetArmours.map((armour) => armour.name).toSet();
+
+      expect(names, hasLength(presetArmours.length));
+    });
+
+    test('all related traits are declared in the armour trait list', () {
+      final traitIds = armourTraits.map((trait) => trait.id).toSet();
+
+      for (final armour in presetArmours) {
+        for (final trait in armour.traits) {
+          expect(traitIds, contains(trait.id), reason: armour.name);
+        }
+      }
+    });
+
+    test('stores Robes/Light Leathers row', () {
+      final armour = armourNamed('Robes/Light Leathers');
+
+      expect(armour.locationArmour?.arms, 1);
+      expect(armour.locationArmour?.body, 1);
+      expect(armour.locationArmour?.legs, 1);
+      expect(armour.locationArmour?.head, isNull);
+      expect(armour.locationArmour?.getArmourValue(), 1);
+      expect(armour.enc, 1);
+      expect(armour.cost, 10);
+      expect(armour.availability, Availability.common);
+      expect(armour.traits.map((trait) => trait.name), ['Subtle']);
+    });
+
+    test('stores shield rows without location armour', () {
+      final combatShield = armourNamed('Combat Shield');
+      final boardingShield = armourNamed('Boarding Shield');
+
+      expect(combatShield.locationArmour, isNull);
+      expect(combatShield.enc, 2);
+      expect(combatShield.cost, 700);
+      expect(combatShield.availability, Availability.common);
+      expect(combatShield.traits.map((trait) => trait.name), ['Shield (2)']);
+      expect(boardingShield.locationArmour, isNull);
+      expect(boardingShield.enc, 4);
+      expect(boardingShield.cost, 1400);
+      expect(boardingShield.availability, Availability.rare);
+      expect(boardingShield.traits.map((trait) => trait.name), ['Shield (4)']);
+    });
+
+    test('stores Astra Militarum Flak Armour row', () {
+      final armour = armourNamed('Astra Militarum Flak Armour');
+
+      expect(armour.locationArmour?.arms, 4);
+      expect(armour.locationArmour?.body, 4);
+      expect(armour.locationArmour?.legs, 4);
+      expect(armour.locationArmour?.head, 4);
+      expect(armour.enc, 4);
+      expect(armour.cost, 1000);
+      expect(armour.availability, Availability.rare);
+      expect(armour.traits.map((trait) => trait.name), ['Loud']);
+    });
+
+    test('stores Mesh Gauntlets row with zero encumbrance', () {
+      final armour = armourNamed('Mesh Gauntlets');
+
+      expect(armour.locationArmour?.arms, 3);
+      expect(armour.locationArmour?.getArmourValue(), 3);
+      expect(armour.enc, 0);
+      expect(armour.cost, 600);
+      expect(armour.availability, Availability.rare);
+      expect(armour.traits, isEmpty);
+    });
+
+    test('stores Tempestus Carapace row', () {
+      final armour = armourNamed('Tempestus Carapace');
+
+      expect(armour.locationArmour?.getArmourValue(), 6);
+      expect(armour.enc, 5);
+      expect(armour.cost, 4000);
+      expect(armour.availability, Availability.exotic);
+      expect(
+        armour.traits.map((trait) => trait.name),
+        [
+          'Heavy (4)',
+          'Loud',
+        ],
+      );
+    });
+
+    test('stores Power Armour row', () {
+      final armour = armourNamed('Power Armour');
+
+      expect(armour.locationArmour?.arms, 10);
+      expect(armour.locationArmour?.body, 10);
+      expect(armour.locationArmour?.legs, 10);
+      expect(armour.locationArmour?.head, 10);
+      expect(armour.enc, 9);
+      expect(armour.cost, 1000000);
+      expect(armour.availability, Availability.exotic);
+      expect(armour.traits.map((trait) => trait.name), ['Loud']);
     });
   });
 
@@ -185,7 +383,7 @@ void main() {
       expect(weapon.mag, 2);
       expect(weapon.enc, 1);
       expect(weapon.cost, 4000);
-      expect(weapon.availability, WeaponAvailability.scarce);
+      expect(weapon.availability, Availability.scarce);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -207,7 +405,7 @@ void main() {
       expect(weapon.mag, 5);
       expect(weapon.enc, 4);
       expect(weapon.cost, 8000);
-      expect(weapon.availability, WeaponAvailability.rare);
+      expect(weapon.availability, Availability.rare);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -248,7 +446,7 @@ void main() {
       expect(weapon.mag, 8);
       expect(weapon.enc, 3);
       expect(weapon.cost, 2000);
-      expect(weapon.availability, WeaponAvailability.scarce);
+      expect(weapon.availability, Availability.scarce);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -270,7 +468,7 @@ void main() {
       expect(weapon.mag, 6);
       expect(weapon.enc, 1);
       expect(weapon.cost, 1500);
-      expect(weapon.availability, WeaponAvailability.rare);
+      expect(weapon.availability, Availability.rare);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -311,7 +509,7 @@ void main() {
       expect(weapon.damage, '-');
       expect(weapon.enc, 1);
       expect(weapon.cost, 10);
-      expect(weapon.availability, WeaponAvailability.common);
+      expect(weapon.availability, Availability.common);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -331,7 +529,7 @@ void main() {
       expect(weapon.damage, '16');
       expect(weapon.enc, 2);
       expect(weapon.cost, 1000);
-      expect(weapon.availability, WeaponAvailability.exotic);
+      expect(weapon.availability, Availability.exotic);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -373,7 +571,7 @@ void main() {
       expect(weapon.damage, '5+StrB');
       expect(weapon.enc, 3);
       expect(weapon.cost, 800);
-      expect(weapon.availability, WeaponAvailability.rare);
+      expect(weapon.availability, Availability.rare);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
@@ -405,7 +603,7 @@ void main() {
       expect(weapon.damage, '2+StrB');
       expect(weapon.enc, 1);
       expect(weapon.cost, 2000);
-      expect(weapon.availability, WeaponAvailability.rare);
+      expect(weapon.availability, Availability.rare);
       expect(
         weapon.traits.map((trait) => trait.name),
         [
