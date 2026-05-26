@@ -28,8 +28,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   void initState() {
     super.initState();
     _builder = _buildInitial(widget.mode);
-    _switchStatsButtonVisible =
-        widget.mode == CharacterCreationMode.rollStats;
+    _switchStatsButtonVisible = widget.mode == CharacterCreationMode.rollStats;
   }
 
   CharacterBuilder _buildInitial(CharacterCreationMode mode) {
@@ -166,8 +165,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                     OutlinedButton.icon(
                       icon: const Icon(Icons.swap_vert),
                       label: const Text('Switch stats  (costs 25 EXP)'),
-                      onPressed:
-                          _builder.exp >= 25 ? _onSwitchStats : null,
+                      onPressed: _builder.exp >= 25 ? _onSwitchStats : null,
                     ),
                     const SizedBox(height: 8),
                   ],
