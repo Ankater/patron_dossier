@@ -1,33 +1,33 @@
-enum WeaponAvailability {
+enum Availability {
   common,
   scarce,
   rare,
   exotic,
 }
 
-extension WeaponAvailabilityDetails on WeaponAvailability {
+extension AvailabilityDetails on Availability {
   int get id {
     switch (this) {
-      case WeaponAvailability.common:
+      case Availability.common:
         return 1;
-      case WeaponAvailability.scarce:
+      case Availability.scarce:
         return 2;
-      case WeaponAvailability.rare:
+      case Availability.rare:
         return 3;
-      case WeaponAvailability.exotic:
+      case Availability.exotic:
         return 4;
     }
   }
 
   String get label {
     switch (this) {
-      case WeaponAvailability.common:
+      case Availability.common:
         return 'Common';
-      case WeaponAvailability.scarce:
+      case Availability.scarce:
         return 'Scarce';
-      case WeaponAvailability.rare:
+      case Availability.rare:
         return 'Rare';
-      case WeaponAvailability.exotic:
+      case Availability.exotic:
         return 'Exotic';
     }
   }

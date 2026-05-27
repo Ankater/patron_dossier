@@ -16,7 +16,7 @@ const boltWeapons = WeaponGroup(
       mag: 2,
       enc: 1,
       cost: 4000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -35,7 +35,7 @@ const boltWeapons = WeaponGroup(
       mag: 4,
       enc: 2,
       cost: 5000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -54,7 +54,7 @@ const boltWeapons = WeaponGroup(
       mag: 6,
       enc: 3,
       cost: 9000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -80,7 +80,7 @@ const flameWeapons = WeaponGroup(
       mag: 2,
       enc: 1,
       cost: 500,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -98,7 +98,7 @@ const flameWeapons = WeaponGroup(
       mag: 4,
       enc: 2,
       cost: 1000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitFlamer,
@@ -122,7 +122,7 @@ const lasWeapons = WeaponGroup(
       mag: 2,
       enc: 0,
       cost: 400,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -140,7 +140,7 @@ const lasWeapons = WeaponGroup(
       mag: 4,
       enc: 2,
       cost: 600,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -158,7 +158,7 @@ const lasWeapons = WeaponGroup(
       mag: 3,
       enc: 1,
       cost: 800,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -176,7 +176,7 @@ const lasWeapons = WeaponGroup(
       mag: 2,
       enc: 2,
       cost: 1000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -194,7 +194,7 @@ const lasWeapons = WeaponGroup(
       mag: 2,
       enc: 2,
       cost: 900,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -211,7 +211,7 @@ const lasWeapons = WeaponGroup(
       mag: 3,
       enc: 3,
       cost: 1000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -229,7 +229,7 @@ const lasWeapons = WeaponGroup(
       mag: 5,
       enc: 4,
       cost: 8000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy10,
@@ -253,7 +253,7 @@ const launcherWeapons = WeaponGroup(
       mag: 6,
       enc: 2,
       cost: 1000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -269,7 +269,7 @@ const launcherWeapons = WeaponGroup(
       mag: 1,
       enc: 3,
       cost: 2000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -292,7 +292,7 @@ const meltaWeapons = WeaponGroup(
       mag: 3,
       enc: 0,
       cost: 8000,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -308,7 +308,7 @@ const meltaWeapons = WeaponGroup(
       mag: 5,
       enc: 1,
       cost: 9000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitRend5,
@@ -330,7 +330,7 @@ const plasmaWeapons = WeaponGroup(
       mag: 6,
       enc: 1,
       cost: 7000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -349,7 +349,7 @@ const plasmaWeapons = WeaponGroup(
       mag: 12,
       enc: 1,
       cost: 8000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -374,7 +374,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 3,
       enc: 0,
       cost: 400,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -391,7 +391,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 5,
       enc: 1,
       cost: 600,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -408,7 +408,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 4,
       enc: 2,
       cost: 570,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -426,7 +426,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 8,
       enc: 3,
       cost: 2000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -445,7 +445,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 12,
       enc: 1,
       cost: 600,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitInflictProne,
@@ -463,7 +463,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 8,
       enc: 1,
       cost: 400,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitInflictProne,
@@ -481,7 +481,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 6,
       enc: 2,
       cost: 1000,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -497,7 +497,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 2,
       enc: 0,
       cost: 250,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitBurst,
@@ -514,7 +514,7 @@ const solidProjectileWeapons = WeaponGroup(
       mag: 6,
       enc: 0,
       cost: 200,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -537,7 +537,7 @@ const specialisedRangedWeapons = WeaponGroup(
       mag: 4,
       enc: 1,
       cost: 1500,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -555,7 +555,7 @@ const specialisedRangedWeapons = WeaponGroup(
       mag: 6,
       enc: 2,
       cost: 1700,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [
         weaponTraitInflictPoisoned,
@@ -573,7 +573,7 @@ const specialisedRangedWeapons = WeaponGroup(
       mag: 3,
       enc: 1,
       cost: 1300,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitClose,
@@ -589,7 +589,7 @@ const specialisedRangedWeapons = WeaponGroup(
       mag: 6,
       enc: 1,
       cost: 1500,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitInflictRestrained,

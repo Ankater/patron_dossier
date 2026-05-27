@@ -1,5 +1,5 @@
-class WeaponTrait {
-  const WeaponTrait({
+class Trait {
+  const Trait({
     required this.id,
     required this.name,
   });
@@ -7,11 +7,11 @@ class WeaponTrait {
   final int id;
   final String name;
 
-  WeaponTrait copyWith({
+  Trait copyWith({
     int? id,
     String? name,
   }) =>
-      WeaponTrait(
+      Trait(
         id: id ?? this.id,
         name: name ?? this.name,
       );

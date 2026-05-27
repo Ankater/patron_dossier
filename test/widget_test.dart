@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/characters/models/character_creation_mode.dart';
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
+import 'package:patron_dossier/features/equipment/screens/armour_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/weapon_list_screen.dart';
 import 'package:patron_dossier/main.dart';
 
@@ -12,6 +13,7 @@ void main() {
 
     expect(find.text('Patron Dossier'), findsOneWidget);
     expect(find.text('Weapons'), findsOneWidget);
+    expect(find.text('Armour'), findsOneWidget);
     expect(find.text('Create character'), findsOneWidget);
   });
 
@@ -73,5 +75,43 @@ void main() {
 
     expect(find.text('CHAIN WEAPONS'), findsOneWidget);
     expect(find.text('Las Carbine'), findsOneWidget);
+  });
+
+  testWidgets('armour list screen groups armours by armour group',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ArmourListScreen()));
+
+    expect(find.text('BASIC'), findsOneWidget);
+    expect(find.text('FLAK'), findsOneWidget);
+    expect(find.text('MESH'), findsOneWidget);
+    expect(find.text('CARAPACE'), findsOneWidget);
+    expect(find.text('POWER'), findsOneWidget);
+    expect(find.text('Robes/Light Leathers'), findsOneWidget);
+    expect(find.text('Combat Shield'), findsOneWidget);
+    expect(find.text('Astra Militarum Flak Armour'), findsOneWidget);
+  });
+
+  testWidgets('armour list screen formats table values',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ArmourListScreen()));
+
+    expect(find.text('Locations'), findsWidgets);
+    expect(find.text('Armour'), findsWidgets);
+    expect(find.text('Availability'), findsWidgets);
+    expect(find.text('Arms, Body, Legs'), findsWidgets);
+    expect(find.text('Special'), findsWidgets);
+    expect(find.text('All'), findsWidgets);
+    expect(find.text('Shield (2)'), findsOneWidget);
+  });
+
+  testWidgets('main screen armour button opens armour list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const PatronDossierApp());
+
+    await tester.tap(find.text('Armour'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('BASIC'), findsOneWidget);
+    expect(find.text('Combat Shield'), findsOneWidget);
   });
 }

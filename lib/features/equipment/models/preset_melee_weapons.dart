@@ -14,7 +14,7 @@ const chainWeapons = WeaponGroup(
       damage: '3+StrB',
       enc: 1,
       cost: 600,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -28,7 +28,7 @@ const chainWeapons = WeaponGroup(
       damage: '3+StrB',
       enc: 1,
       cost: 500,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -42,7 +42,7 @@ const chainWeapons = WeaponGroup(
       damage: '5+StrB',
       enc: 3,
       cost: 800,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -64,7 +64,7 @@ const forceWeapons = WeaponGroup(
       damage: '1+StrB',
       enc: 2,
       cost: 7000,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [
         weaponTraitDefensive,
@@ -78,7 +78,7 @@ const forceWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 8000,
-      availability: WeaponAvailability.exotic,
+      availability: Availability.exotic,
       source: 'core book',
       traits: [],
     ),
@@ -95,7 +95,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 80,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [],
     ),
@@ -106,7 +106,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '0+StrB',
       enc: 0,
       cost: 30,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitSubtle,
@@ -119,7 +119,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '4+StrB',
       enc: 2,
       cost: 200,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -133,7 +133,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '4+StrB',
       enc: 2,
       cost: 300,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -147,7 +147,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 25,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [],
     ),
@@ -185,7 +185,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '0+StrB',
       enc: 0,
       cost: 50,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitSubtle,
@@ -199,7 +199,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '1+StrB',
       enc: 2,
       cost: 25,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [
         weaponTraitDefensive,
@@ -213,7 +213,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 150,
-      availability: WeaponAvailability.common,
+      availability: Availability.common,
       source: 'core book',
       traits: [],
     ),
@@ -237,7 +237,7 @@ const mundaneWeapons = WeaponGroup(
       damage: '0+StrB',
       enc: 1,
       cost: 60,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -257,7 +257,7 @@ const shockWeapons = WeaponGroup(
       damage: '0+StrB',
       enc: 1,
       cost: 500,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -272,7 +272,7 @@ const shockWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 250,
-      availability: WeaponAvailability.scarce,
+      availability: Availability.scarce,
       source: 'core book',
       traits: [
         weaponTraitLoud,
@@ -292,7 +292,7 @@ const powerWeapons = WeaponGroup(
       damage: '6+StrB',
       enc: 2,
       cost: 3400,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -307,7 +307,7 @@ const powerWeapons = WeaponGroup(
       damage: '6+StrB',
       enc: 2,
       cost: 400,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitHeavy4,
@@ -321,7 +321,7 @@ const powerWeapons = WeaponGroup(
       damage: '2+StrB',
       enc: 1,
       cost: 2000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitPenetrating2,
@@ -336,7 +336,7 @@ const powerWeapons = WeaponGroup(
       damage: '5+StrB',
       enc: 1,
       cost: 3000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitPenetrating2,
@@ -349,7 +349,7 @@ const powerWeapons = WeaponGroup(
       damage: '4+StrB',
       enc: 1,
       cost: 3000,
-      availability: WeaponAvailability.rare,
+      availability: Availability.rare,
       source: 'core book',
       traits: [
         weaponTraitPenetrating4,

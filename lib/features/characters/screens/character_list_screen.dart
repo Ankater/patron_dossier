@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../equipment/screens/armour_list_screen.dart';
 import '../../equipment/screens/weapon_list_screen.dart';
 import 'pre_character_create_screen.dart';
 
@@ -22,14 +23,29 @@ class CharacterListScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
-            child: FilledButton.icon(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const WeaponListScreen(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FilledButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const WeaponListScreen(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.inventory_2_outlined),
+                  label: const Text('Weapons'),
                 ),
-              ),
-              icon: const Icon(Icons.inventory_2_outlined),
-              label: const Text('Weapons'),
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const ArmourListScreen(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.shield_outlined),
+                  label: const Text('Armour'),
+                ),
+              ],
             ),
           ),
           for (final character in _dummyCharacters)

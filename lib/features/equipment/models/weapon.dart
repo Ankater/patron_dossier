@@ -27,9 +27,9 @@ class Weapon {
   final int? mag;
   final int enc;
   final int? cost;
-  final WeaponAvailability? availability;
+  final Availability? availability;
   final String source;
-  final List<WeaponTrait> traits;
+  final List<Trait> traits;
 
   Weapon copyWith({
     int? id,
@@ -42,7 +42,7 @@ class Weapon {
     Object? cost = _unset,
     Object? availability = _unset,
     String? source,
-    List<WeaponTrait>? traits,
+    List<Trait>? traits,
   }) =>
       Weapon(
         id: id ?? this.id,
@@ -55,7 +55,7 @@ class Weapon {
         cost: cost == _unset ? this.cost : cost as int?,
         availability: availability == _unset
             ? this.availability
-            : availability as WeaponAvailability?,
+            : availability as Availability?,
         source: source ?? this.source,
         traits: traits ?? this.traits,
       );
