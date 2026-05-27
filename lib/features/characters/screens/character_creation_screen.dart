@@ -23,6 +23,7 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   late CharacterBuilder _builder;
   bool _canSwitchStats = false;
   bool _switchStatsButtonVisible = false;
+  bool? _supportsAdjustedReorderCallback;
 
   @override
   void initState() {
@@ -74,7 +75,6 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   }
 
   void _onReorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) newIndex -= 1;
     if (oldIndex == newIndex) return;
 
     final stats = _builder.character.stats;
@@ -183,10 +183,10 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   }
 
   Widget _buildReorderableStatList(CharacterStats stats, ThemeData theme) {
-    return ReorderableListView.builder(
+    return _buildCompatibleReorderableListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: statDefinitions.length,
-      onReorder: _onReorder,
+      onReorderItem: _onReorder,
       itemBuilder: (context, index) {
         final def = statDefinitions[index];
         final value = def.getter(stats);
@@ -220,6 +220,52 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
         );
       },
     );
+  }
+
+  Widget _buildCompatibleReorderableListView({
+    required EdgeInsetsGeometry padding,
+    required int itemCount,
+    required ReorderCallback onReorderItem,
+    required IndexedWidgetBuilder itemBuilder,
+  }) {
+    final builder = ReorderableListView.builder;
+    final baseArguments = <Symbol, dynamic>{
+      #padding: padding,
+      #itemCount: itemCount,
+      #itemBuilder: itemBuilder,
+    };
+
+    // Flutter 3.44 replaces onReorder with onReorderItem, while older SDKs
+    // still require onReorder. Dynamic invocation keeps both SDK ranges
+    // compiling without binding statically to the deprecated named parameter.
+    if (_supportsAdjustedReorderCallback != false) {
+      try {
+        final list = Function.apply(
+          builder,
+          const [],
+          <Symbol, dynamic>{
+            ...baseArguments,
+            #onReorderItem: onReorderItem,
+          },
+        ) as Widget;
+        _supportsAdjustedReorderCallback = true;
+        return list;
+      } on NoSuchMethodError {
+        _supportsAdjustedReorderCallback = false;
+      }
+    }
+
+    return Function.apply(
+      builder,
+      const [],
+      <Symbol, dynamic>{
+        ...baseArguments,
+        #onReorder: (int oldIndex, int newIndex) {
+          if (newIndex > oldIndex) newIndex -= 1;
+          onReorderItem(oldIndex, newIndex);
+        },
+      },
+    ) as Widget;
   }
 
   Widget _buildStatList(CharacterStats stats, bool isAssignMode) {
