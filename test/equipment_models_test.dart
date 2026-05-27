@@ -2,10 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/equipment/models/armour.dart';
 import 'package:patron_dossier/features/equipment/models/armour_group.dart';
 import 'package:patron_dossier/features/equipment/models/force_field.dart';
+import 'package:patron_dossier/features/equipment/models/gear.dart';
 import 'package:patron_dossier/features/equipment/models/location_armour.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armour_traits.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armours.dart';
 import 'package:patron_dossier/features/equipment/models/preset_force_fields.dart';
+import 'package:patron_dossier/features/equipment/models/preset_gear.dart';
 import 'package:patron_dossier/features/equipment/models/preset_grenades_and_explosives.dart';
 import 'package:patron_dossier/features/equipment/models/preset_melee_weapons.dart';
 import 'package:patron_dossier/features/equipment/models/preset_ranged_weapons.dart';
@@ -27,6 +29,8 @@ void main() {
       expect(Availability.rare.label, 'Rare');
       expect(Availability.exotic.id, 4);
       expect(Availability.exotic.label, 'Exotic');
+      expect(Availability.veryRare.id, 5);
+      expect(Availability.veryRare.label, 'Very Rare');
     });
   });
 
@@ -401,6 +405,101 @@ void main() {
       expect(forceField.enc, 0);
       expect(forceField.cost, 6000);
       expect(forceField.availability, Availability.exotic);
+    });
+  });
+
+  group('Gear model', () {
+    const gear = Gear(
+      name: 'Test Gear',
+      enc: 1,
+      cost: 100,
+      availability: Availability.common,
+      group: 'Tools',
+      source: 'core book',
+    );
+
+    test('copyWith updates values and preserves unspecified values', () {
+      final updated = gear.copyWith(
+        name: 'Updated Gear',
+        cost: 200,
+        availability: Availability.rare,
+      );
+
+      expect(updated.name, 'Updated Gear');
+      expect(updated.enc, 1);
+      expect(updated.cost, 200);
+      expect(updated.availability, Availability.rare);
+      expect(updated.group, 'Tools');
+      expect(updated.source, 'core book');
+    });
+  });
+
+  group('Preset gear', () {
+    Gear gearNamed(String name) =>
+        presetGear.firstWhere((gear) => gear.name == name);
+
+    test('contains grouped data from the gear tables', () {
+      expect(presetGearGroups, [
+        'Tools',
+        'Clothing and Personal Gear',
+      ]);
+      expect(presetGear, hasLength(47));
+      expect(
+        presetGear.where((gear) => gear.group == gearGroupTools),
+        hasLength(37),
+      );
+      expect(
+        presetGear.where(
+          (gear) => gear.group == gearGroupClothingAndPersonalGear,
+        ),
+        hasLength(10),
+      );
+    });
+
+    test('uses unique names and core book source', () {
+      final names = presetGear.map((gear) => gear.name).toSet();
+
+      expect(names, hasLength(presetGear.length));
+      expect(
+        presetGear.every((gear) => gear.source == 'core book'),
+        isTrue,
+      );
+    });
+
+    test('stores Disguise Kit row with very rare availability', () {
+      final gear = gearNamed('Disguise Kit');
+
+      expect(gear.enc, 1);
+      expect(gear.cost, 100);
+      expect(gear.availability, Availability.veryRare);
+      expect(gear.group, gearGroupTools);
+    });
+
+    test('stores Monotask Servo-Skull row', () {
+      final gear = gearNamed('Monotask Servo-Skull');
+
+      expect(gear.enc, 0);
+      expect(gear.cost, 2000);
+      expect(gear.availability, Availability.rare);
+      expect(gear.group, gearGroupTools);
+    });
+
+    test('stores Survival Gear row', () {
+      final gear = gearNamed('Survival Gear');
+
+      expect(gear.enc, 3);
+      expect(gear.cost, 50);
+      expect(gear.availability, Availability.common);
+      expect(gear.group, gearGroupClothingAndPersonalGear);
+    });
+
+    test('stores Void Suit row', () {
+      final gear = gearNamed('Void Suit');
+
+      expect(gear.enc, 2);
+      expect(gear.cost, 2000);
+      expect(gear.availability, Availability.scarce);
+      expect(gear.group, gearGroupClothingAndPersonalGear);
     });
   });
 
