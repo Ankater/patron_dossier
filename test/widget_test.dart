@@ -41,6 +41,20 @@ void main() {
     }
   });
 
+  testWidgets('roll stats switch button enables draggable stat list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CharacterCreationScreen(mode: CharacterCreationMode.rollStats),
+    ));
+
+    await tester.tap(find.text('Switch stats  (costs 25 EXP)'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('EXP: 25'), findsOneWidget);
+    expect(find.text('Drag stats to switch values'), findsOneWidget);
+    expect(find.byType(ReorderableDragStartListener), findsWidgets);
+  });
+
   testWidgets('pre-character create screen shows both mode options',
       (WidgetTester tester) async {
     await tester.pumpWidget(const PatronDossierApp());
