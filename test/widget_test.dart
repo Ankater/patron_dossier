@@ -4,6 +4,7 @@ import 'package:patron_dossier/features/characters/models/character_creation_mod
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/armour_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/force_field_list_screen.dart';
+import 'package:patron_dossier/features/equipment/screens/gear_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/weapon_list_screen.dart';
 import 'package:patron_dossier/main.dart';
 
@@ -16,6 +17,7 @@ void main() {
     expect(find.text('Weapons'), findsOneWidget);
     expect(find.text('Armour'), findsOneWidget);
     expect(find.text('Force Fields'), findsOneWidget);
+    expect(find.text('Gear'), findsOneWidget);
     expect(find.text('Create character'), findsOneWidget);
   });
 
@@ -153,5 +155,29 @@ void main() {
 
     expect(find.text('Refractor Field'), findsOneWidget);
     expect(find.text('Conversion Field'), findsOneWidget);
+  });
+
+  testWidgets('gear list screen groups gear by table header',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: GearListScreen()));
+
+    expect(find.text('TOOLS'), findsOneWidget);
+    expect(find.text('CLOTHING AND PERSONAL GEAR'), findsOneWidget);
+    expect(find.text('Auspex/Scanner'), findsOneWidget);
+    expect(find.text('Disguise Kit'), findsOneWidget);
+    expect(find.text('Backpack/Slings'), findsOneWidget);
+    expect(find.text('Void Suit'), findsOneWidget);
+    expect(find.text('Very Rare'), findsOneWidget);
+  });
+
+  testWidgets('main screen gear button opens gear list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const PatronDossierApp());
+
+    await tester.tap(find.text('Gear'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('TOOLS'), findsOneWidget);
+    expect(find.text('Auspex/Scanner'), findsOneWidget);
   });
 }

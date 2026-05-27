@@ -3,6 +3,7 @@ enum Availability {
   scarce,
   rare,
   exotic,
+  veryRare,
 }
 
 extension AvailabilityDetails on Availability {
@@ -16,6 +17,8 @@ extension AvailabilityDetails on Availability {
         return 3;
       case Availability.exotic:
         return 4;
+      case Availability.veryRare:
+        return 5;
     }
   }
 
@@ -29,6 +32,8 @@ extension AvailabilityDetails on Availability {
         return 'Rare';
       case Availability.exotic:
         return 'Exotic';
+      case Availability.veryRare:
+        return 'Very Rare';
     }
   }
 }
