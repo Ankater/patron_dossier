@@ -65,8 +65,7 @@ class _ArmourDataTable extends StatelessWidget {
                 DataCell(Text(armour.name)),
                 DataCell(Text(_formatLocations(armour.locationArmour))),
                 DataCell(
-                  Text(armour.locationArmour?.getArmourValue().toString() ??
-                      '-'),
+                  Text(armour.locationArmour?.armourValue.toString() ?? '-'),
                 ),
                 DataCell(Text(armour.enc.toString())),
                 DataCell(Text(armour.cost.toString())),

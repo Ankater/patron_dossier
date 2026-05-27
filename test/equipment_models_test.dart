@@ -164,16 +164,16 @@ void main() {
 
     test('getArmourValue returns the first available location value', () {
       expect(
-        const LocationArmour(arms: 1, body: 2).getArmourValue(),
+        const LocationArmour(arms: 1, body: 2).armourValue,
         1,
       );
       expect(
-        const LocationArmour(body: 2, legs: 3).getArmourValue(),
+        const LocationArmour(body: 2, legs: 3).armourValue,
         2,
       );
-      expect(const LocationArmour(legs: 3).getArmourValue(), 3);
-      expect(const LocationArmour(head: 4).getArmourValue(), 4);
-      expect(const LocationArmour().getArmourValue(), isNull);
+      expect(const LocationArmour(legs: 3).armourValue, 3);
+      expect(const LocationArmour(head: 4).armourValue, 4);
+      expect(const LocationArmour().armourValue, isNull);
     });
   });
 
@@ -266,7 +266,7 @@ void main() {
       expect(armour.locationArmour?.body, 1);
       expect(armour.locationArmour?.legs, 1);
       expect(armour.locationArmour?.head, isNull);
-      expect(armour.locationArmour?.getArmourValue(), 1);
+      expect(armour.locationArmour?.armourValue, 1);
       expect(armour.enc, 1);
       expect(armour.cost, 10);
       expect(armour.availability, Availability.common);
@@ -306,7 +306,7 @@ void main() {
       final armour = armourNamed('Mesh Gauntlets');
 
       expect(armour.locationArmour?.arms, 3);
-      expect(armour.locationArmour?.getArmourValue(), 3);
+      expect(armour.locationArmour?.armourValue, 3);
       expect(armour.enc, 0);
       expect(armour.cost, 600);
       expect(armour.availability, Availability.rare);
@@ -316,7 +316,7 @@ void main() {
     test('stores Tempestus Carapace row', () {
       final armour = armourNamed('Tempestus Carapace');
 
-      expect(armour.locationArmour?.getArmourValue(), 6);
+      expect(armour.locationArmour?.armourValue, 6);
       expect(armour.enc, 5);
       expect(armour.cost, 4000);
       expect(armour.availability, Availability.exotic);

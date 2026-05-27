@@ -2,6 +2,7 @@ import 'armour.dart';
 import 'armour_group.dart';
 import 'location_armour.dart';
 import 'preset_armour_traits.dart';
+import 'preset_weapon_traits.dart';
 import 'weapon_availability.dart';
 
 const _allLocations4 = LocationArmour(arms: 4, body: 4, legs: 4, head: 4);
@@ -40,7 +41,7 @@ const basicArmours = ArmourGroup(
       enc: 1,
       cost: 10,
       availability: Availability.common,
-      traits: [armourTraitSubtle],
+      traits: [weaponTraitSubtle],
     ),
     Armour(
       name: 'Heavy Leathers',
@@ -56,7 +57,7 @@ const basicArmours = ArmourGroup(
       enc: 1,
       cost: 1200,
       availability: Availability.rare,
-      traits: [armourTraitSubtle],
+      traits: [weaponTraitSubtle],
     ),
     Armour(
       name: 'Armoured Greatcoat',
@@ -64,7 +65,7 @@ const basicArmours = ArmourGroup(
       enc: 2,
       cost: 500,
       availability: Availability.rare,
-      traits: [armourTraitSubtle],
+      traits: [weaponTraitSubtle],
     ),
     Armour(
       name: 'Scrap-plate',
@@ -150,7 +151,7 @@ const flakArmours = ArmourGroup(
       enc: 4,
       cost: 1000,
       availability: Availability.rare,
-      traits: [armourTraitLoud],
+      traits: [weaponTraitLoud],
     ),
   ],
 );
@@ -234,7 +235,7 @@ const carapaceArmours = ArmourGroup(
       enc: 3,
       cost: 800,
       availability: Availability.rare,
-      traits: [armourTraitHeavy4, armourTraitLoud],
+      traits: [weaponTraitHeavy4, weaponTraitLoud],
     ),
     Armour(
       name: 'Enforcer Carapace',
@@ -242,7 +243,7 @@ const carapaceArmours = ArmourGroup(
       enc: 4,
       cost: 1800,
       availability: Availability.rare,
-      traits: [armourTraitHeavy4, armourTraitLoud],
+      traits: [weaponTraitHeavy4, weaponTraitLoud],
     ),
     Armour(
       name: 'Tempestus Carapace',
@@ -250,7 +251,7 @@ const carapaceArmours = ArmourGroup(
       enc: 5,
       cost: 4000,
       availability: Availability.exotic,
-      traits: [armourTraitHeavy4, armourTraitLoud],
+      traits: [weaponTraitHeavy4, weaponTraitLoud],
     ),
   ],
 );
@@ -264,7 +265,7 @@ const powerArmours = ArmourGroup(
       enc: 7,
       cost: 500000,
       availability: Availability.exotic,
-      traits: [armourTraitLoud],
+      traits: [weaponTraitLoud],
     ),
     Armour(
       name: 'Power Armour',
@@ -272,7 +273,7 @@ const powerArmours = ArmourGroup(
       enc: 9,
       cost: 1000000,
       availability: Availability.exotic,
-      traits: [armourTraitLoud],
+      traits: [weaponTraitLoud],
     ),
   ],
 );

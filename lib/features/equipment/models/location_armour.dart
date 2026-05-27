@@ -26,5 +26,5 @@ class LocationArmour {
         head: head == _unset ? this.head : head as int?,
       );
 
-  int? getArmourValue() => arms ?? body ?? legs ?? head;
+  int? get armourValue => arms ?? body ?? legs ?? head;
 }
