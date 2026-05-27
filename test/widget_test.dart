@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/characters/models/character_creation_mode.dart';
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/armour_list_screen.dart';
+import 'package:patron_dossier/features/equipment/screens/force_field_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/weapon_list_screen.dart';
 import 'package:patron_dossier/main.dart';
 
@@ -14,6 +15,7 @@ void main() {
     expect(find.text('Patron Dossier'), findsOneWidget);
     expect(find.text('Weapons'), findsOneWidget);
     expect(find.text('Armour'), findsOneWidget);
+    expect(find.text('Force Fields'), findsOneWidget);
     expect(find.text('Create character'), findsOneWidget);
   });
 
@@ -127,5 +129,29 @@ void main() {
 
     expect(find.text('BASIC'), findsOneWidget);
     expect(find.text('Combat Shield'), findsOneWidget);
+  });
+
+  testWidgets('force fields list screen shows preset force fields',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ForceFieldListScreen()));
+
+    expect(find.text('Force Fields'), findsOneWidget);
+    expect(find.text('Protection'), findsOneWidget);
+    expect(find.text('Overload'), findsOneWidget);
+    expect(find.text('Refractor Field'), findsOneWidget);
+    expect(find.text('Conversion Field'), findsOneWidget);
+    expect(find.text('1d10'), findsOneWidget);
+    expect(find.text('2d10'), findsOneWidget);
+  });
+
+  testWidgets('main screen force fields button opens force fields list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const PatronDossierApp());
+
+    await tester.tap(find.text('Force Fields'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Refractor Field'), findsOneWidget);
+    expect(find.text('Conversion Field'), findsOneWidget);
   });
 }

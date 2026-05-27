@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/equipment/models/armour.dart';
 import 'package:patron_dossier/features/equipment/models/armour_group.dart';
+import 'package:patron_dossier/features/equipment/models/force_field.dart';
 import 'package:patron_dossier/features/equipment/models/location_armour.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armour_traits.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armours.dart';
+import 'package:patron_dossier/features/equipment/models/preset_force_fields.dart';
 import 'package:patron_dossier/features/equipment/models/preset_grenades_and_explosives.dart';
 import 'package:patron_dossier/features/equipment/models/preset_melee_weapons.dart';
 import 'package:patron_dossier/features/equipment/models/preset_ranged_weapons.dart';
@@ -340,6 +342,65 @@ void main() {
       expect(armour.cost, 1000000);
       expect(armour.availability, Availability.exotic);
       expect(armour.traits.map((trait) => trait.name), ['Loud']);
+    });
+  });
+
+  group('ForceField model', () {
+    const forceField = ForceField(
+      name: 'Test Field',
+      protection: '1d10',
+      overload: 10,
+      enc: 0,
+      cost: 1000,
+      availability: Availability.exotic,
+    );
+
+    test('copyWith updates values and preserves unspecified values', () {
+      final updated = forceField.copyWith(
+        name: 'Updated Field',
+        protection: '2d10',
+        cost: 6000,
+      );
+
+      expect(updated.name, 'Updated Field');
+      expect(updated.protection, '2d10');
+      expect(updated.overload, 10);
+      expect(updated.enc, 0);
+      expect(updated.cost, 6000);
+      expect(updated.availability, Availability.exotic);
+    });
+  });
+
+  group('Preset force fields', () {
+    ForceField forceFieldNamed(String name) =>
+        presetForceFields.firstWhere((forceField) => forceField.name == name);
+
+    test('contains data from the force fields table', () {
+      expect(presetForceFields, hasLength(2));
+      expect(presetForceFields.map((forceField) => forceField.name), [
+        'Refractor Field',
+        'Conversion Field',
+      ]);
+    });
+
+    test('stores Refractor Field row', () {
+      final forceField = forceFieldNamed('Refractor Field');
+
+      expect(forceField.protection, '1d10');
+      expect(forceField.overload, 10);
+      expect(forceField.enc, 0);
+      expect(forceField.cost, 1000);
+      expect(forceField.availability, Availability.exotic);
+    });
+
+    test('stores Conversion Field row', () {
+      final forceField = forceFieldNamed('Conversion Field');
+
+      expect(forceField.protection, '2d10');
+      expect(forceField.overload, 20);
+      expect(forceField.enc, 0);
+      expect(forceField.cost, 6000);
+      expect(forceField.availability, Availability.exotic);
     });
   });
 
