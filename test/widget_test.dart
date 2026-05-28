@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patron_dossier/features/characters/models/character_blank_object.dart';
+import 'package:patron_dossier/features/characters/models/character_builder.dart';
 import 'package:patron_dossier/features/characters/models/character_creation_mode.dart';
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
 import 'package:patron_dossier/features/characters/screens/origins_screen.dart';
@@ -126,6 +128,149 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(OriginsScreen), findsOneWidget);
+  });
+
+  testWidgets('origins screen shows all origin names and stat grid',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    for (final name in [
+      'Agri World',
+      'Feudal World',
+      'Feral World',
+      'Forge World',
+      'Hive World',
+      'Shrine World',
+      'Schola Progenium',
+      'Voidborn',
+    ]) {
+      expect(find.text(name), findsOneWidget, reason: '$name missing');
+    }
+    for (final label in [
+      'WS',
+      'BS',
+      'STR',
+      'TGH',
+      'AG',
+      'PER',
+      'INT',
+      'WIL',
+      'FEL',
+    ]) {
+      expect(find.text(label), findsOneWidget,
+          reason: '$label missing in grid');
+    }
+  });
+
+  testWidgets('origins screen shows roll origin button',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    expect(find.text('Roll origin  (+25 EXP)'), findsOneWidget);
+  });
+
+  testWidgets('origins screen selecting an origin shows 3 bonus chips',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    await tester.tap(find.text('Agri World'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChoiceChip), findsNWidgets(3));
+    final confirmBtn = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Confirm'),
+    );
+    expect(confirmBtn.onPressed, isNull);
+  });
+
+  testWidgets('origins screen confirm enabled after choosing bonus',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    await tester.tap(find.text('Agri World'));
+    await tester.pumpAndSettle();
+    // Agri World bonus choices: TGH, AG, WIL — tap the first chip
+    await tester.tap(find.byType(ChoiceChip).first);
+    await tester.pumpAndSettle();
+
+    final confirmBtn = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Confirm'),
+    );
+    expect(confirmBtn.onPressed, isNotNull);
+  });
+
+  testWidgets('origins screen change origin returns to origin list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    await tester.tap(find.text('Agri World'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Change origin'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Agri World'), findsOneWidget);
+    expect(find.text('Voidborn'), findsOneWidget);
+    expect(find.byType(ChoiceChip), findsNothing);
+  });
+
+  testWidgets('origins screen roll button selects an origin',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: OriginsScreen(
+        builder: const CharacterBuilder(
+          character: CharacterBlankObject(),
+          exp: 50,
+        ),
+        onComplete: (_) {},
+      ),
+    ));
+
+    await tester.tap(find.text('Roll origin  (+25 EXP)'));
+    await tester.pumpAndSettle();
+
+    // Any origin will show exactly 3 bonus chips
+    expect(find.byType(ChoiceChip), findsNWidgets(3));
+    expect(find.text('Change origin'), findsOneWidget);
   });
 
   testWidgets('weapon list screen groups weapons by type and weapon group',

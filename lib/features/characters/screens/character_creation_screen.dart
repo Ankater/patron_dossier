@@ -192,7 +192,11 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                   onPressed: _originEnabled
                       ? () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const OriginsScreen(),
+                              builder: (_) => OriginsScreen(
+                                builder: _builder,
+                                onComplete: (updated) =>
+                                    setState(() => _builder = updated),
+                              ),
                             ),
                           )
                       : null,
