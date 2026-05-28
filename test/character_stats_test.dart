@@ -20,6 +20,7 @@ void main() {
       expect(updated.tgh, 20);
       expect(updated.ag, 20);
       expect(updated.per, 20);
+      expect(updated.intel, 20);
       expect(updated.wil, 20);
       expect(updated.fel, 20);
     });
@@ -29,6 +30,7 @@ void main() {
     test('updates tgh', () => expect(base.copyWith(tgh: 31).tgh, 31));
     test('updates ag', () => expect(base.copyWith(ag: 22).ag, 22));
     test('updates per', () => expect(base.copyWith(per: 35).per, 35));
+    test('updates intel', () => expect(base.copyWith(intel: 34).intel, 34));
     test('updates wil', () => expect(base.copyWith(wil: 38).wil, 38));
     test('updates fel', () => expect(base.copyWith(fel: 24).fel, 24));
 
@@ -186,6 +188,13 @@ void main() {
       expect(wilDef.label, 'WIL');
       const stats = CharacterStats(wil: 30, fel: 35);
       expect(wilDef.getter(stats), 30);
+    });
+
+    test('INTEL uses CharacterStats.intel', () {
+      final intelDef = statDefinitions[6];
+      expect(intelDef.label, 'INT');
+      const stats = CharacterStats(intel: 33);
+      expect(intelDef.getter(stats), 33);
     });
   });
 }

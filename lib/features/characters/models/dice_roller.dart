@@ -12,6 +12,7 @@ CharacterStats rollCharacterStats([Random? rng]) {
     tgh: roll(),
     ag: roll(),
     per: roll(),
+    intel: roll(),
     wil: roll(),
     fel: roll(),
   );

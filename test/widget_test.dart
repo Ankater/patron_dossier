@@ -28,7 +28,17 @@ void main() {
     ));
 
     expect(find.textContaining('Assign points: 90'), findsOneWidget);
-    for (final label in ['WS', 'BS', 'STR', 'TGH', 'AG', 'PER', 'WIL', 'FEL']) {
+    for (final label in [
+      'WS',
+      'BS',
+      'STR',
+      'TGH',
+      'AG',
+      'PER',
+      'INT',
+      'WIL',
+      'FEL',
+    ]) {
       expect(find.text(label), findsOneWidget, reason: '$label missing');
     }
   });
@@ -40,7 +50,17 @@ void main() {
     ));
 
     expect(find.text('Reroll'), findsOneWidget);
-    for (final label in ['WS', 'BS', 'STR', 'TGH', 'AG', 'PER', 'WIL', 'FEL']) {
+    for (final label in [
+      'WS',
+      'BS',
+      'STR',
+      'TGH',
+      'AG',
+      'PER',
+      'INT',
+      'WIL',
+      'FEL',
+    ]) {
       expect(find.text(label), findsOneWidget, reason: '$label missing');
     }
   });

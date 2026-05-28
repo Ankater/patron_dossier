@@ -32,6 +32,10 @@ final List<StatDefinition> statDefinitions = [
       getter: (s) => s.per,
       updater: (s, v) => s.copyWith(per: v)),
   StatDefinition(
+      label: 'INT',
+      getter: (s) => s.intel,
+      updater: (s, v) => s.copyWith(intel: v)),
+  StatDefinition(
       label: 'WIL',
       getter: (s) => s.wil,
       updater: (s, v) => s.copyWith(wil: v)),
