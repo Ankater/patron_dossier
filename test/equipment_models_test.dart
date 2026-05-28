@@ -1,13 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/equipment/models/armour.dart';
 import 'package:patron_dossier/features/equipment/models/armour_group.dart';
+import 'package:patron_dossier/features/equipment/models/character_gear.dart';
 import 'package:patron_dossier/features/equipment/models/force_field.dart';
 import 'package:patron_dossier/features/equipment/models/gear.dart';
+import 'package:patron_dossier/features/equipment/models/gear_property.dart';
 import 'package:patron_dossier/features/equipment/models/location_armour.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armour_traits.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armours.dart';
 import 'package:patron_dossier/features/equipment/models/preset_force_fields.dart';
 import 'package:patron_dossier/features/equipment/models/preset_gear.dart';
+import 'package:patron_dossier/features/equipment/models/preset_gear_properties.dart';
 import 'package:patron_dossier/features/equipment/models/preset_grenades_and_explosives.dart';
 import 'package:patron_dossier/features/equipment/models/preset_melee_weapons.dart';
 import 'package:patron_dossier/features/equipment/models/preset_ranged_weapons.dart';
@@ -698,6 +701,143 @@ void main() {
           'Unstable',
         ],
       );
+    });
+  });
+
+  group('Property model', () {
+    const property = Property(name: 'Test Property', source: 'core book');
+
+    test('copyWith updates name and preserves source', () {
+      final updated = property.copyWith(name: 'Updated');
+
+      expect(updated.name, 'Updated');
+      expect(updated.source, 'core book');
+    });
+
+    test('copyWith updates source and preserves name', () {
+      final updated = property.copyWith(source: 'supplement');
+
+      expect(updated.name, 'Test Property');
+      expect(updated.source, 'supplement');
+    });
+  });
+
+  group('Quality model', () {
+    const quality = Quality(name: 'Lightweight', source: 'core book');
+
+    test('copyWith returns a Quality', () {
+      final updated = quality.copyWith(name: 'Durable');
+
+      expect(updated, isA<Quality>());
+      expect(updated.name, 'Durable');
+      expect(updated.source, 'core book');
+    });
+  });
+
+  group('Flaw model', () {
+    const flaw = Flaw(name: 'Bulky', source: 'core book');
+
+    test('copyWith returns a Flaw', () {
+      final updated = flaw.copyWith(name: 'Shoddy');
+
+      expect(updated, isA<Flaw>());
+      expect(updated.name, 'Shoddy');
+      expect(updated.source, 'core book');
+    });
+  });
+
+  group('Preset gear properties', () {
+    test('presetQualities contains four named qualities', () {
+      expect(presetQualities, hasLength(4));
+      expect(
+        presetQualities.map((q) => q.name),
+        containsAll([
+          'Lightweight',
+          'Master Crafted',
+          'Ornamental',
+          'Durable',
+        ]),
+      );
+      expect(
+        presetQualities.every((q) => q.source == 'core book'),
+        isTrue,
+      );
+    });
+
+    test('presetFlaws contains four named flaws', () {
+      expect(presetFlaws, hasLength(4));
+      expect(
+        presetFlaws.map((f) => f.name),
+        containsAll([
+          'Bulky',
+          'Shoddy',
+          'Ugly',
+          'Unreliable',
+        ]),
+      );
+      expect(
+        presetFlaws.every((f) => f.source == 'core book'),
+        isTrue,
+      );
+    });
+  });
+
+  group('CharacterGear model', () {
+    const lightweight = Quality(name: 'Lightweight', source: 'core book');
+    const bulky = Flaw(name: 'Bulky', source: 'core book');
+    const characterGear = CharacterGear(
+      name: 'Test Gear',
+      enc: 1,
+      cost: 100,
+      availability: Availability.common,
+      group: 'Tools',
+      source: 'core book',
+      qualities: [lightweight],
+      flaws: [bulky],
+    );
+
+    test('defaults to empty qualities and flaws', () {
+      const bare = CharacterGear(
+        name: 'Bare Gear',
+        enc: 0,
+        cost: 50,
+        availability: Availability.common,
+        group: 'Tools',
+        source: 'core book',
+      );
+
+      expect(bare.qualities, isEmpty);
+      expect(bare.flaws, isEmpty);
+    });
+
+    test('copyWith updates qualities and preserves unspecified values', () {
+      const durable = Quality(name: 'Durable', source: 'core book');
+      final updated = characterGear.copyWith(qualities: [durable]);
+
+      expect(updated.name, 'Test Gear');
+      expect(updated.enc, 1);
+      expect(updated.qualities.single.name, 'Durable');
+      expect(updated.flaws.single.name, 'Bulky');
+    });
+
+    test('copyWith updates flaws and preserves unspecified values', () {
+      const shoddy = Flaw(name: 'Shoddy', source: 'core book');
+      final updated = characterGear.copyWith(flaws: [shoddy]);
+
+      expect(updated.name, 'Test Gear');
+      expect(updated.flaws.single.name, 'Shoddy');
+      expect(updated.qualities.single.name, 'Lightweight');
+    });
+
+    test('copyWith returns a CharacterGear', () {
+      final updated = characterGear.copyWith(name: 'Updated Gear');
+
+      expect(updated, isA<CharacterGear>());
+      expect(updated.name, 'Updated Gear');
+    });
+
+    test('is a subtype of Gear', () {
+      expect(characterGear, isA<Gear>());
     });
   });
 
