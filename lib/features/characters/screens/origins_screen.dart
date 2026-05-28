@@ -26,7 +26,6 @@ class OriginsScreen extends StatefulWidget {
 class _OriginsScreenState extends State<OriginsScreen> {
   Origin? _selectedOrigin;
   Characteristic? _selectedBonus;
-  bool _wasRolled = false;
 
   /// Stats with origin bonuses applied as a live preview.
   ///
@@ -48,7 +47,6 @@ class _OriginsScreenState extends State<OriginsScreen> {
     setState(() {
       _selectedOrigin = presetOrigins[index];
       _selectedBonus = null;
-      _wasRolled = true;
     });
   }
 
@@ -56,7 +54,6 @@ class _OriginsScreenState extends State<OriginsScreen> {
     setState(() {
       _selectedOrigin = origin;
       _selectedBonus = null;
-      _wasRolled = false;
     });
   }
 
@@ -64,7 +61,6 @@ class _OriginsScreenState extends State<OriginsScreen> {
     setState(() {
       _selectedOrigin = null;
       _selectedBonus = null;
-      _wasRolled = false;
     });
   }
 
