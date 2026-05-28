@@ -28,7 +28,7 @@ class PreCharacterCreateScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Choose a creation method',
+                'Choose a creation stats method',
                 style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),

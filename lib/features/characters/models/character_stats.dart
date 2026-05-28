@@ -6,6 +6,7 @@ class CharacterStats {
     this.tgh = 20,
     this.ag = 20,
     this.per = 20,
+    this.intel = 20,
     this.wil = 20,
     this.fel = 20,
   });
@@ -16,6 +17,7 @@ class CharacterStats {
   final int tgh;
   final int ag;
   final int per;
+  final int intel;
   final int wil;
   final int fel;
 
@@ -26,6 +28,7 @@ class CharacterStats {
     int? tgh,
     int? ag,
     int? per,
+    int? intel,
     int? wil,
     int? fel,
   }) =>
@@ -36,6 +39,7 @@ class CharacterStats {
         tgh: tgh ?? this.tgh,
         ag: ag ?? this.ag,
         per: per ?? this.per,
+        intel: intel ?? this.intel,
         wil: wil ?? this.wil,
         fel: fel ?? this.fel,
       );

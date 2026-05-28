@@ -5,6 +5,7 @@ import 'package:patron_dossier/features/characters/models/assign_points_logic.da
 import 'package:patron_dossier/features/characters/models/character_blank_object.dart';
 import 'package:patron_dossier/features/characters/models/character_builder.dart';
 import 'package:patron_dossier/features/characters/models/character_stats.dart';
+import 'package:patron_dossier/features/characters/models/characteristic.dart';
 import 'package:patron_dossier/features/characters/models/dice_roller.dart';
 import 'package:patron_dossier/features/characters/models/stat_definition.dart';
 
@@ -20,6 +21,7 @@ void main() {
       expect(updated.tgh, 20);
       expect(updated.ag, 20);
       expect(updated.per, 20);
+      expect(updated.intel, 20);
       expect(updated.wil, 20);
       expect(updated.fel, 20);
     });
@@ -29,6 +31,7 @@ void main() {
     test('updates tgh', () => expect(base.copyWith(tgh: 31).tgh, 31));
     test('updates ag', () => expect(base.copyWith(ag: 22).ag, 22));
     test('updates per', () => expect(base.copyWith(per: 35).per, 35));
+    test('updates intel', () => expect(base.copyWith(intel: 34).intel, 34));
     test('updates wil', () => expect(base.copyWith(wil: 38).wil, 38));
     test('updates fel', () => expect(base.copyWith(fel: 24).fel, 24));
 
@@ -173,6 +176,94 @@ void main() {
     });
   });
 
+  group('Characteristic.valueFrom', () {
+    const stats = CharacterStats(
+      ws: 21,
+      bs: 22,
+      str: 23,
+      tgh: 24,
+      ag: 25,
+      per: 26,
+      intel: 27,
+      wil: 28,
+      fel: 29,
+    );
+
+    test('ws returns ws', () => expect(Characteristic.ws.valueFrom(stats), 21));
+    test('bs returns bs', () => expect(Characteristic.bs.valueFrom(stats), 22));
+    test('str returns str',
+        () => expect(Characteristic.str.valueFrom(stats), 23));
+    test('tgh returns tgh',
+        () => expect(Characteristic.tgh.valueFrom(stats), 24));
+    test('ag returns ag', () => expect(Characteristic.ag.valueFrom(stats), 25));
+    test('per returns per',
+        () => expect(Characteristic.per.valueFrom(stats), 26));
+    test('intel returns intel',
+        () => expect(Characteristic.intel.valueFrom(stats), 27));
+    test('wil returns wil',
+        () => expect(Characteristic.wil.valueFrom(stats), 28));
+    test('fel returns fel',
+        () => expect(Characteristic.fel.valueFrom(stats), 29));
+  });
+
+  group('Characteristic.applyBonus', () {
+    const base = CharacterStats();
+
+    test('applies default +5 to ws', () {
+      final result = Characteristic.ws.applyBonus(base);
+      expect(result.ws, 25);
+      expect(result.bs, 20);
+    });
+
+    test('applies default +5 to bs', () {
+      final result = Characteristic.bs.applyBonus(base);
+      expect(result.bs, 25);
+      expect(result.ws, 20);
+    });
+
+    test('applies default +5 to str', () {
+      expect(Characteristic.str.applyBonus(base).str, 25);
+    });
+
+    test('applies default +5 to tgh', () {
+      expect(Characteristic.tgh.applyBonus(base).tgh, 25);
+    });
+
+    test('applies default +5 to ag', () {
+      expect(Characteristic.ag.applyBonus(base).ag, 25);
+    });
+
+    test('applies default +5 to per', () {
+      expect(Characteristic.per.applyBonus(base).per, 25);
+    });
+
+    test('applies default +5 to intel', () {
+      expect(Characteristic.intel.applyBonus(base).intel, 25);
+    });
+
+    test('applies default +5 to wil', () {
+      expect(Characteristic.wil.applyBonus(base).wil, 25);
+    });
+
+    test('applies default +5 to fel', () {
+      expect(Characteristic.fel.applyBonus(base).fel, 25);
+    });
+
+    test('respects custom amount', () {
+      final result = Characteristic.str.applyBonus(base, amount: 10);
+      expect(result.str, 30);
+      expect(result.ws, 20);
+    });
+
+    test('stacking two bonuses on different stats is independent', () {
+      final after1 = Characteristic.ws.applyBonus(base);
+      final after2 = Characteristic.tgh.applyBonus(after1);
+      expect(after2.ws, 25);
+      expect(after2.tgh, 25);
+      expect(after2.str, 20);
+    });
+  });
+
   group('StatDefinitions', () {
     test('FEL uses CharacterStats.fel, not wil', () {
       final felDef = statDefinitions.last;
@@ -186,6 +277,13 @@ void main() {
       expect(wilDef.label, 'WIL');
       const stats = CharacterStats(wil: 30, fel: 35);
       expect(wilDef.getter(stats), 30);
+    });
+
+    test('INTEL uses CharacterStats.intel', () {
+      final intelDef = statDefinitions[6];
+      expect(intelDef.label, 'INT');
+      const stats = CharacterStats(intel: 33);
+      expect(intelDef.getter(stats), 33);
     });
   });
 }
