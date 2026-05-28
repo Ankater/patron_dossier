@@ -8,6 +8,7 @@ import '../models/character_stats.dart';
 import '../models/dice_roller.dart';
 import '../models/stat_definition.dart';
 import '../widgets/stat_row.dart';
+import 'origins_screen.dart';
 
 class CharacterCreationScreen extends StatefulWidget {
   const CharacterCreationScreen({super.key, required this.mode});
@@ -103,6 +104,15 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
 
   bool _canDecrement(int current) => current > 20;
 
+  // Origin is unlocked in roll mode always; in assign mode only when all
+  // points are spent and every stat has been raised above the baseline (≥ 24).
+  bool get _originEnabled {
+    if (widget.mode == CharacterCreationMode.rollStats) return true;
+    if ((_builder.assignCharPoints ?? 0) != 0) return false;
+    final stats = _builder.character.stats;
+    return statDefinitions.every((def) => def.getter(stats) >= 24);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isAssignMode = widget.mode == CharacterCreationMode.assignPoints;
@@ -155,12 +165,12 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                 ? _buildReorderableStatList(stats, theme)
                 : _buildStatList(stats, isAssignMode),
           ),
-          if (!isAssignMode)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (!isAssignMode) ...[
                   if (_switchStatsButtonVisible) ...[
                     OutlinedButton.icon(
                       icon: const Icon(Icons.swap_vert),
@@ -174,9 +184,22 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
                     label: const Text('Reroll'),
                     onPressed: _reroll,
                   ),
+                  const SizedBox(height: 8),
                 ],
-              ),
+                FilledButton.icon(
+                  icon: const Icon(Icons.person_search),
+                  label: const Text('Origin'),
+                  onPressed: _originEnabled
+                      ? () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const OriginsScreen(),
+                            ),
+                          )
+                      : null,
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );
@@ -269,23 +292,28 @@ class _CharacterCreationScreenState extends State<CharacterCreationScreen> {
   }
 
   Widget _buildStatList(CharacterStats stats, bool isAssignMode) {
-    return ListView.separated(
+    // Nine items are few enough to build eagerly — no lazy loading needed,
+    // and eager building keeps all rows in the tree for testability.
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: statDefinitions.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
-      itemBuilder: (context, index) {
-        final def = statDefinitions[index];
-        final value = def.getter(stats);
-        return StatRow(
-          label: def.label,
-          value: value,
-          showControls: isAssignMode,
-          canIncrement: isAssignMode && _canIncrement(value),
-          canDecrement: isAssignMode && _canDecrement(value),
-          onIncrement: () => _onIncrement(def),
-          onDecrement: () => _onDecrement(def),
-        );
-      },
+      child: Column(
+        children: [
+          for (var i = 0; i < statDefinitions.length; i++) ...[
+            if (i > 0) const Divider(height: 1),
+            StatRow(
+              label: statDefinitions[i].label,
+              value: statDefinitions[i].getter(stats),
+              showControls: isAssignMode,
+              canIncrement: isAssignMode &&
+                  _canIncrement(statDefinitions[i].getter(stats)),
+              canDecrement: isAssignMode &&
+                  _canDecrement(statDefinitions[i].getter(stats)),
+              onIncrement: () => _onIncrement(statDefinitions[i]),
+              onDecrement: () => _onDecrement(statDefinitions[i]),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

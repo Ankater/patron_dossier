@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/characters/models/character_creation_mode.dart';
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
+import 'package:patron_dossier/features/characters/screens/origins_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/armour_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/force_field_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/gear_list_screen.dart';
@@ -87,6 +88,44 @@ void main() {
 
     expect(find.text('Assign points'), findsOneWidget);
     expect(find.text('Roll stats'), findsOneWidget);
+  });
+
+  testWidgets('assign points screen shows disabled Origin button initially',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CharacterCreationScreen(mode: CharacterCreationMode.assignPoints),
+    ));
+
+    expect(find.text('Origin'), findsOneWidget);
+    final btn = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Origin'),
+    );
+    expect(btn.onPressed, isNull);
+  });
+
+  testWidgets('roll stats screen shows enabled Origin button',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CharacterCreationScreen(mode: CharacterCreationMode.rollStats),
+    ));
+
+    expect(find.text('Origin'), findsOneWidget);
+    final btn = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Origin'),
+    );
+    expect(btn.onPressed, isNotNull);
+  });
+
+  testWidgets('roll stats Origin button navigates to OriginsScreen',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CharacterCreationScreen(mode: CharacterCreationMode.rollStats),
+    ));
+
+    await tester.tap(find.text('Origin'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(OriginsScreen), findsOneWidget);
   });
 
   testWidgets('weapon list screen groups weapons by type and weapon group',
