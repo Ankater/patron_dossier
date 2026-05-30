@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../equipment/screens/armour_list_screen.dart';
+import '../../equipment/screens/augment_list_screen.dart';
 import '../../equipment/screens/force_field_list_screen.dart';
 import '../../equipment/screens/gear_list_screen.dart';
 import '../../equipment/screens/weapon_list_screen.dart';
@@ -66,6 +67,16 @@ class CharacterListScreen extends StatelessWidget {
                   ),
                   icon: const Icon(Icons.backpack_outlined),
                   label: const Text('Gear'),
+                ),
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const AugmentListScreen(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.settings_accessibility_outlined),
+                  label: const Text('Augments'),
                 ),
               ],
             ),
