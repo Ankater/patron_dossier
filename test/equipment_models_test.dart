@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patron_dossier/features/equipment/models/armour.dart';
 import 'package:patron_dossier/features/equipment/models/armour_group.dart';
+import 'package:patron_dossier/features/equipment/models/augment.dart';
 import 'package:patron_dossier/features/equipment/models/character_gear.dart';
 import 'package:patron_dossier/features/equipment/models/force_field.dart';
 import 'package:patron_dossier/features/equipment/models/gear.dart';
@@ -8,6 +9,7 @@ import 'package:patron_dossier/features/equipment/models/gear_property.dart';
 import 'package:patron_dossier/features/equipment/models/location_armour.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armour_traits.dart';
 import 'package:patron_dossier/features/equipment/models/preset_armours.dart';
+import 'package:patron_dossier/features/equipment/models/preset_augments.dart';
 import 'package:patron_dossier/features/equipment/models/preset_force_fields.dart';
 import 'package:patron_dossier/features/equipment/models/preset_gear.dart';
 import 'package:patron_dossier/features/equipment/models/preset_gear_properties.dart';
@@ -238,6 +240,165 @@ void main() {
 
       expect(updated.name, 'Group');
       expect(updated.armours, isEmpty);
+    });
+  });
+
+  group('Augment model', () {
+    const augment = Augment(
+      name: 'Test Augment',
+      cost: 500,
+      availability: Availability.rare,
+      featureDescriptions: [
+        'Improves a characteristic.',
+        'Requires surgical installation.',
+      ],
+    );
+
+    test('copyWith updates values and preserves unspecified values', () {
+      final updated = augment.copyWith(
+        name: 'Updated Augment',
+        cost: 750,
+        featureDescriptions: const ['Updated feature.'],
+      );
+
+      expect(updated.name, 'Updated Augment');
+      expect(updated.cost, 750);
+      expect(updated.availability, Availability.rare);
+      expect(updated.featureDescriptions, ['Updated feature.']);
+    });
+  });
+
+  group('AugmentReplacement model', () {
+    const replacement = AugmentReplacement(
+      name: 'Test Replacement',
+      cost: 1000,
+      availability: Availability.exotic,
+      featureDescriptions: ['Replaces a body part.'],
+      slot: Slot(name: 'Primary'),
+      locationArmour: LocationArmour(arms: 2),
+      bodySlot: BodySlot.arm,
+    );
+
+    test('copyWith updates replacement values and preserves inherited values',
+        () {
+      final updated = replacement.copyWith(
+        slot: const Slot(name: 'Secondary'),
+        bodySlot: BodySlot.eye,
+      );
+
+      expect(updated.name, 'Test Replacement');
+      expect(updated.cost, 1000);
+      expect(updated.availability, Availability.exotic);
+      expect(updated.featureDescriptions, ['Replaces a body part.']);
+      expect(updated.slot.name, 'Secondary');
+      expect(updated.locationArmour?.arms, 2);
+      expect(updated.bodySlot, BodySlot.eye);
+    });
+
+    test('copyWith can clear nullable location armour', () {
+      final updated = replacement.copyWith(locationArmour: null);
+
+      expect(updated.locationArmour, isNull);
+    });
+  });
+
+  group('Preset augments', () {
+    Augment augmentNamed(String name) =>
+        presetAugments.firstWhere((augment) => augment.name == name);
+
+    AugmentReplacement replacementNamed(String name) =>
+        presetAugmeticReplacements
+            .firstWhere((augment) => augment.name == name);
+
+    test('contains grouped augment data', () {
+      expect(presetAugmentGroups, [
+        augmentGroupAugmeticReplacements,
+        augmentGroupAugmetics,
+      ]);
+      expect(presetAugmeticReplacements, hasLength(6));
+      expect(presetAugmetics, hasLength(9));
+      expect(presetAugments, hasLength(15));
+    });
+
+    test('uses unique names', () {
+      final names = presetAugments.map((augment) => augment.name).toSet();
+
+      expect(names, hasLength(presetAugments.length));
+    });
+
+    test('stores Augmetic Arm replacement row and features', () {
+      final augment = replacementNamed('Augmetic Arm');
+
+      expect(augment.cost, 1000);
+      expect(augment.availability, Availability.scarce);
+      expect(augment.slot, augmeticArmSlot);
+      expect(augment.locationArmour?.arms, 1);
+      expect(augment.bodySlot, BodySlot.arm);
+      expect(augment.featureDescriptions, hasLength(3));
+      expect(
+        augment.featureDescriptions.last,
+        contains('Two-handed melee weapons'),
+      );
+    });
+
+    test('stores Augmetic Heart replacement row without location armour', () {
+      final augment = replacementNamed('Augmetic Heart');
+
+      expect(augment.cost, 3000);
+      expect(augment.availability, Availability.rare);
+      expect(augment.slot, augmeticHeartSlot);
+      expect(augment.locationArmour, isNull);
+      expect(augment.bodySlot, BodySlot.heart);
+      expect(augment.featureDescriptions.last, contains('Hard (-20)'));
+    });
+
+    test('stores Tracks/Wheels as leg replacement armour', () {
+      final augment = replacementNamed('Augmetic Tracks/Wheels');
+
+      expect(augment.cost, 1500);
+      expect(augment.availability, Availability.scarce);
+      expect(augment.slot, augmeticLegSlot);
+      expect(augment.locationArmour?.legs, 1);
+      expect(augment.bodySlot, BodySlot.legs);
+      expect(augment.featureDescriptions, hasLength(3));
+    });
+
+    test('stores Augur Array row', () {
+      final augment = augmentNamed('Augur Array');
+
+      expect(augment.cost, 6000);
+      expect(augment.availability, Availability.rare);
+      expect(augment.featureDescriptions.first, contains('Auspex'));
+      expect(augment.featureDescriptions.last, contains('+5 Perception'));
+    });
+
+    test('stores mechadendrite rows', () {
+      final ballistic = augmentNamed('Ballistic Mechadendrite');
+      final manipulator = augmentNamed('Manipulator Mechadendrite');
+      final medicae = augmentNamed('Medicae Mechadendrite');
+      final optical = augmentNamed('Optical Mechadendrite');
+      final utility = augmentNamed('Utility Mechadendrite');
+
+      expect(ballistic.cost, 2000);
+      expect(ballistic.featureDescriptions.single, contains('Laspistol'));
+      expect(manipulator.cost, 1400);
+      expect(manipulator.featureDescriptions, hasLength(3));
+      expect(medicae.cost, 1400);
+      expect(medicae.featureDescriptions, hasLength(3));
+      expect(optical.cost, 1200);
+      expect(optical.featureDescriptions, hasLength(3));
+      expect(utility.cost, 1000);
+      expect(utility.featureDescriptions, hasLength(3));
+    });
+
+    test('stores Mind Impulse Unit and Vocal Implant rows', () {
+      final mindImpulseUnit = augmentNamed('Mind Impulse Unit');
+      final vocalImplant = augmentNamed('Vocal Implant');
+
+      expect(mindImpulseUnit.cost, 10000);
+      expect(mindImpulseUnit.featureDescriptions.single, contains('Tech'));
+      expect(vocalImplant.cost, 400);
+      expect(vocalImplant.featureDescriptions.single, contains('100 metres'));
     });
   });
 

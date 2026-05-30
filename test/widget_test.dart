@@ -6,6 +6,7 @@ import 'package:patron_dossier/features/characters/models/character_creation_mod
 import 'package:patron_dossier/features/characters/screens/character_creation_screen.dart';
 import 'package:patron_dossier/features/characters/screens/origins_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/armour_list_screen.dart';
+import 'package:patron_dossier/features/equipment/screens/augment_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/force_field_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/gear_list_screen.dart';
 import 'package:patron_dossier/features/equipment/screens/weapon_list_screen.dart';
@@ -21,6 +22,7 @@ void main() {
     expect(find.text('Armour'), findsOneWidget);
     expect(find.text('Force Fields'), findsOneWidget);
     expect(find.text('Gear'), findsOneWidget);
+    expect(find.text('Augments'), findsOneWidget);
     expect(find.text('Create character'), findsOneWidget);
   });
 
@@ -383,5 +385,32 @@ void main() {
 
     expect(find.text('TOOLS'), findsOneWidget);
     expect(find.text('Auspex/Scanner'), findsOneWidget);
+  });
+
+  testWidgets('augment list screen shows replacements and augments tables',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: AugmentListScreen()));
+
+    expect(find.text('AUGMETIC REPLACEMENTS'), findsOneWidget);
+    expect(find.text('AUGMETICS'), findsOneWidget);
+    expect(find.text('Slot'), findsOneWidget);
+    expect(find.text('Body'), findsOneWidget);
+    expect(find.text('Features'), findsWidgets);
+    expect(find.text('Augmetic Arm'), findsOneWidget);
+    expect(find.text('Augmetic Heart'), findsOneWidget);
+    expect(find.text('Augur Array'), findsOneWidget);
+    expect(find.text('Mind Impulse Unit'), findsOneWidget);
+  });
+
+  testWidgets('main screen augments button opens augments list',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const PatronDossierApp());
+
+    await tester.tap(find.text('Augments'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('AUGMETIC REPLACEMENTS'), findsOneWidget);
+    expect(find.text('Augmetic Arm'), findsOneWidget);
+    expect(find.text('Augur Array'), findsOneWidget);
   });
 }
